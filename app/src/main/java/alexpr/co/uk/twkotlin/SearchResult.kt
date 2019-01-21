@@ -9,15 +9,15 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
-class MainAct : AppCompatActivity() {
-
+class SearchResult : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.search_result_activity)
+        //TODO add the layout behaviour to the location and date filters
+        intent.extras?.getString("search_query")
 
-    override fun onCreate(bundle: Bundle?) {
-        super.onCreate(bundle)
-        setContentView(R.layout.main_act)
-
-        recyclerView = findViewById<RecyclerView>(R.id.home_recycler);
+        recyclerView = findViewById<RecyclerView>(R.id.search_result_recycler);
         recyclerView?.layoutManager = CustomLinearLayoutManager(this);
         val list = java.util.ArrayList<MenuSection>(2);
 
@@ -45,8 +45,8 @@ class MainAct : AppCompatActivity() {
         list.add(MenuSection(Uri.parse("https://upload.wikimedia.org/wikipedia/commons/1/1e/Computer_server_rack.jpg"), "Nails", ArrayList<MenuItem>(0)))
         list.add(MenuSection(Uri.parse("https://upload.wikimedia.org/wikipedia/commons/1/1e/Computer_server_rack.jpg"), "Nails", ArrayList<MenuItem>(0)))
         recyclerView?.adapter = HomeAdapter(list, this, { str: String -> handleItemClick(str) }, { int: Int -> handleSectionClick(int) });
-    }
 
+    }
     fun handleItemClick(str: String) {
         Log.e("alexp", "sub section clicked $str");
         startActivity(Intent(this, SearchResult::class.java).putExtra("search_query", str))
