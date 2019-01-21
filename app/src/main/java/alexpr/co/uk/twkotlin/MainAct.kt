@@ -2,6 +2,7 @@ package alexpr.co.uk.twkotlin
 
 import alexpr.co.uk.twkotlin.models.MenuItem
 import alexpr.co.uk.twkotlin.models.MenuSection
+import alexpr.co.uk.twkotlin.search.SearchResult
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle

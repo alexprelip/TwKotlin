@@ -14,6 +14,8 @@
             <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
         </activity>
-        <activity android:name=".SearchResult"/>
+        <activity android:name=".search.SearchResult"/>
+        <activity android:name=".search.SearchQueryFilter" />
+        <activity android:name=".search.LocationFilter" />
     </application>
 </manifest>
