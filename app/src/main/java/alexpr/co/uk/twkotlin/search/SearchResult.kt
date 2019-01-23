@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.search_result_activity.*
 class SearchResult : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     val LOCATION_REQ_CODE = 1234
+    val DATE_TIME_REQ_CODE = 5678
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,10 @@ class SearchResult : AppCompatActivity() {
         findViewById<View>(R.id.search_location_field).setOnClickListener {
             val location = findViewById<AppCompatTextView>(R.id.search_location_field).text
             startActivityForResult(Intent(this, LocationFilter::class.java).putExtra("search_query", location), LOCATION_REQ_CODE) }
+
+        findViewById<View>(R.id.search_date_time_field).setOnClickListener {
+            val location = findViewById<AppCompatTextView>(R.id.search_date_time_field).text
+            startActivityForResult(Intent(this, DateTimeFilter::class.java).putExtra("search_query", location), DATE_TIME_REQ_CODE) }
 
         recyclerView = findViewById<RecyclerView>(R.id.search_result_recycler);
         recyclerView?.layoutManager = CustomLinearLayoutManager(this);

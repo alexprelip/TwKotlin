@@ -17,5 +17,6 @@
         <activity android:name=".search.SearchResult"/>
         <activity android:name=".search.SearchQueryFilter" />
         <activity android:name=".search.LocationFilter" />
+        <activity android:name=".search.DateTimeFilter" />
     </application>
 </manifest>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:grid="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:colorBackground"
+        android:elevation="10dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="?android:colorBackground"
+                    android:paddingEnd="30dp"
+                    android:src="@drawable/ic_arrow_back_black_24dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/date_time_query_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:colorBackground"
+                    android:selectAllOnFocus="true"
+                    android:text="Any time"
+                    android:textColorHighlight="#99FFA500"
+                    android:textSize="25sp" />
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:id="@+id/time_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_access_time_black_24dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:text="Time"
+                    android:textSize="17sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Any time"
+                    android:textColor="#FF5555"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/clear_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_highlight_off_black_24dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/time_pickers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_drawable"
+                android:visibility="gone">
+
+                <NumberPicker
+                    android:id="@+id/hour_picker_from"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/separator"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp" />
+
+                <View
+                    android:id="@+id/separator"
+                    android:layout_width="1dp"
+                    android:layout_height="180dp"
+                    android:layout_centerInParent="true"
+                    android:background="#999999" />
+
+                <NumberPicker
+                    android:id="@+id/hour_picker_to"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/separator"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/date_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_date_range_black_24dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:text="Date"
+                    android:textSize="17sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Any day"
+                    android:textColor="#FF5555"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/clear_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_highlight_off_black_24dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/date_pickers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="4dp"
+                android:visibility="visible"
+                app:columnCount="2"
+                app:rowOrderPreserved="false"
+                app:useDefaultMargins="true">
+
+                <androidx.appcompat.widget.AppCompatToggleButton
+                    android:id="@+id/date_filter_today"
+                    style="@style/ToggleButton"
+                    android:layout_width="0dp"
+                    android:textOff="Today"
+                    android:textOn="Today"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal" />
+
+                <androidx.appcompat.widget.AppCompatToggleButton
+                    android:id="@+id/date_filter_tomorrow"
+                    style="@style/ToggleButton"
+                    android:layout_width="0dp"
+                    android:textOff="Tomorrow"
+                    android:textOn="Tomorrow"
+                    app:layout_columnWeight="1"
+                    grid:layout_gravity="fill_horizontal" />
+
+                <androidx.appcompat.widget.AppCompatToggleButton
+                    android:id="@+id/date_filter_three_days"
+                    style="@style/ToggleButton"
+                    android:layout_width="0dp"
+                    android:textOff="Next 3 days"
+                    android:textOn="Next 3 days"
+                    app:layout_column="0"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal"
+                    app:layout_row="1" />
+
+                <androidx.appcompat.widget.AppCompatToggleButton
+                    android:id="@+id/date_filter_choose_day"
+                    style="@style/ToggleButton"
+                    android:layout_width="0dp"
+                    android:textOff="Choose day..."
+                    android:textOn="Choose day..."
+                    app:layout_column="1"
+                    app:layout_columnWeight="1"
+                    app:layout_gravity="fill_horizontal"
+                    app:layout_row="1" />
+
+            </androidx.gridlayout.widget.GridLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/date_picker_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
