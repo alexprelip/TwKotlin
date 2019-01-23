@@ -3,6 +3,7 @@ package alexpr.co.uk.twkotlin.search
 import alexpr.co.uk.twkotlin.R
 import alexpr.co.uk.twkotlin.search.CalendarAdapter.ViewHolder
 import android.content.Context
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -93,7 +94,7 @@ class CalendarAdapter(
                 position++
             }
         }
-        if (lastSelectedPosition >-1) {
+        if (lastSelectedPosition > -1) {
             dayList[lastSelectedPosition].isSelected = false
             notifyItemChanged(lastSelectedPosition, Any())
         }
@@ -101,6 +102,13 @@ class CalendarAdapter(
         notifyItemChanged(position, Any())
         lastSelectedPosition = position
         dateClicked(dayList[position].day, dayList[position].month, dayList[position].year)
+        mRecycler.post({
+            val rect = Rect()
+            mRecycler.findViewHolderForAdapterPosition(position)?.itemView?.getGlobalVisibleRect(rect)
+            rect.top = 200
+            rect.bottom = 200
+            mRecycler.findViewHolderForAdapterPosition(position)?.itemView?.requestRectangleOnScreen(rect)
+        })
     }
 
     private lateinit var mRecycler: RecyclerView
