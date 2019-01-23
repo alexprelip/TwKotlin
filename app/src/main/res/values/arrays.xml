@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="months_array">
-        <item>JANUARY</item>
-        <item>FEBRUARY</item>
-        <item>MARCH</item>
-        <item>APRIL</item>
-        <item>MAY</item>
-        <item>JUNE</item>
-        <item>JULY</item>
-        <item>AUGUST</item>
-        <item>SEPTEMBER</item>
-        <item>OCTOBER</item>
-        <item>NOVEMBER</item>
-        <item>DECEMBER</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
     </array>
 
     <array name="week_days_array">
@@ -23,5 +23,15 @@
         <item>Fri</item>
         <item>Sat</item>
         <item>Sun</item>
+    </array>
+
+    <array name="week_days_array_full">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
     </array>
 </resources>

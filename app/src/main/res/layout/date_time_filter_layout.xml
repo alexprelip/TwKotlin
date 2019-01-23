@@ -50,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -170,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:padding="4dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:columnCount="2"
                 app:rowOrderPreserved="false"
                 app:useDefaultMargins="true">
@@ -221,7 +222,8 @@
                 android:id="@+id/date_picker_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -4,7 +4,6 @@ import alexpr.co.uk.twkotlin.R
 import alexpr.co.uk.twkotlin.search.CalendarAdapter.ViewHolder
 import android.content.Context
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,23 +22,21 @@ class CalendarAdapter(
     var viewCount = 0
     val dayList: Array<DayItem>
     private var weekDays: Array<String>
-    var lastFocusedView: TextView? = null
+    var lastSelectedPosition: Int = -1
 
     init {
-
         weekDays = context.resources.getStringArray(R.array.week_days_array)
         viewCount = monthsToDisplay * 49
-        dayList = Array(viewCount) { DayItem(0, 0, 0, false, false, false, "") }
+        dayList = Array(viewCount) { DayItem(0, 0, 0, false, false, false, "", false) }
         val startDateCopy: Calendar = startDate.clone() as Calendar
         val endDate: Calendar = startDate.clone() as Calendar
         endDate.set(Calendar.MONTH, endDate.get(Calendar.MONTH) + monthsToDisplay - 1)
         endDate.set(Calendar.DAY_OF_MONTH, endDate.getActualMaximum(Calendar.DAY_OF_MONTH))
-        Log.e("alexp", "max for month: " + endDate.getActualMaximum(Calendar.DAY_OF_MONTH))
 
         for (i in 0..viewCount - 1) {
             if (i % 49 < 7) {
                 val pos: Int = i % 49
-                dayList[i] = DayItem(0, 0, 0, false, true, false, weekDays.get(pos))
+                dayList[i] = DayItem(0, 0, 0, false, true, false, weekDays.get(pos), false)
             }
         }
 
@@ -61,7 +58,8 @@ class CalendarAdapter(
                             startDateCopy.compareTo(startDate) >= 0,
                             false,
                             startDateCopy.compareTo(startDate) == 0,
-                            startDateCopy.get(Calendar.DAY_OF_MONTH).toString()
+                            startDateCopy.get(Calendar.DAY_OF_MONTH).toString(),
+                            false
                     )
             position++
             startDateCopy.add(Calendar.DAY_OF_MONTH, 1)
@@ -74,9 +72,7 @@ class CalendarAdapter(
         return ViewHolder(view);
     }
 
-    override fun getItemCount(): Int {
-        return dayList.size
-    }
+    override fun getItemCount(): Int = dayList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position, dateClicked);
@@ -86,49 +82,82 @@ class CalendarAdapter(
         return dayList[pos]
     }
 
+    fun setSelectedDay(date: Calendar) {
+        var position = 0
+        while (position <= dayList.size) {
+            if (date.get(Calendar.DAY_OF_MONTH) == dayList[position].day
+                    && date.get(Calendar.MONTH) == dayList[position].month
+                    && date.get(Calendar.YEAR) == dayList[position].year) {
+                break
+            } else {
+                position++
+            }
+        }
+        if (lastSelectedPosition >-1) {
+            dayList[lastSelectedPosition].isSelected = false
+            notifyItemChanged(lastSelectedPosition, Any())
+        }
+        dayList[position].isSelected = true
+        notifyItemChanged(position, Any())
+        lastSelectedPosition = position
+        dateClicked(dayList[position].day, dayList[position].month, dayList[position].year)
+    }
+
+    private lateinit var mRecycler: RecyclerView
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        mRecycler = recyclerView
+        super.onAttachedToRecyclerView(recyclerView)
+    }
+
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(position: Int, dateClicked: (Int, Int, Int) -> Unit) {
             val dayItem = dayList[position]
             val tv: TextView = view.date_item_view
 
-            // hides the unused views but maintains the
+            // hides the unused views but maintains the cell count
             if (!dayItem.isActive && dayItem.displayText.isEmpty()) {
                 val lp = view.layoutParams
                 lp.height = 0;
                 view.layoutParams = lp
             }
+
             tv.text = dayItem.displayText
             tv.isEnabled = dayItem.isActive
 
-            if (dayItem.isToday) {
+            if (dayItem.isDayName) {
+                tv.setTextColor(context.resources.getColor(R.color.calendarEnabledDay))
+            } else if (dayItem.isSelected && dayItem.isToday) {
                 tv.setTypeface(null, Typeface.BOLD);
+                tv.setTextColor(context.resources.getColor(R.color.calendarSelectedDay))
+                tv.background = context.getDrawable(R.drawable.date_selected_circle)
+            } else if (dayItem.isToday) {
+                tv.setTypeface(null, Typeface.BOLD);
+                tv.setTextColor(context.resources.getColor(R.color.calendarToday))
+                tv.background = null
+            } else if (dayItem.isSelected) {
+                tv.setTextColor(context.resources.getColor(R.color.calendarSelectedDay))
+                tv.background = context.getDrawable(R.drawable.date_selected_circle)
+            } else if (dayItem.isActive) {
+                tv.background = null
+                tv.setTextColor(context.resources.getColor(R.color.calendarEnabledDay))
+            } else {
+                tv.background = null
+                tv.setTextColor(context.resources.getColor(R.color.calendarDisabledDay))
             }
 
             if (dayItem.isActive) {
-                if (dayItem.isToday) {
-                    tv.setTextColor(context.resources.getColor(R.color.calendarToday))
-                } else {
-                    tv.setTextColor(context.resources.getColor(R.color.calendarEnabledDay))
-                }
-
                 view.setOnClickListener {
-                    if (lastFocusedView != null) {
-                        if (lastFocusedView?.typeface?.isBold!!)
-                            lastFocusedView?.setTextColor(context.resources.getColor(R.color.calendarToday))
-                        else lastFocusedView?.setTextColor(context.resources.getColor(R.color.calendarEnabledDay))
-                        lastFocusedView?.background = null
+                    if (lastSelectedPosition > -1) {
+                        dayList[lastSelectedPosition].isSelected = false
+                        notifyItemChanged(lastSelectedPosition, Any())
+
                     }
-
-
-                    tv.setTextColor(context.resources.getColor(R.color.calendarSelectedDay))
-                    tv.background = context.getDrawable(R.drawable.date_selected_circle)
-                    lastFocusedView = tv
+                    dayList[adapterPosition].isSelected = true
+                    lastSelectedPosition = adapterPosition
+                    notifyItemChanged(adapterPosition, Any())
                     dateClicked(dayItem.day, dayItem.month, dayItem.year)
                 }
-            } else if (dayItem.isDayName) {
-                tv.setTextColor(context.resources.getColor(R.color.calendarEnabledDay))
-            } else {
-                tv.setTextColor(context.resources.getColor(R.color.calendarDisabledDay))
             }
         }
     }

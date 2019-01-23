@@ -39,6 +39,7 @@ public class CalendarItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             String monthName = monthsArray[((CalendarAdapter) parent.getAdapter()).getItemAtPosition(params.getViewAdapterPosition()).getMonth()];
+            monthName = monthName.toUpperCase();
             c.drawText(monthName, parent.getWidth() / 2, child.getTop() - 100, paint);
         }
     }
