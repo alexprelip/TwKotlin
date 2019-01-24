@@ -11,9 +11,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.OnTouchListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.search_result_activity.*
 
 class SearchResult : AppCompatActivity() {
@@ -29,14 +31,38 @@ class SearchResult : AppCompatActivity() {
         val queryStr = intent.extras?.getString("search_query")
         Log.e("alepx", "queryString: " + queryStr)
         findViewById<View>(R.id.search_query_field).setOnClickListener {
-            startActivity(Intent(this, SearchQueryFilter::class.java).putExtra("search_query", queryStr)) }
+            startActivity(Intent(this, SearchQueryFilter::class.java).putExtra("search_query", queryStr))
+        }
         findViewById<View>(R.id.search_location_field).setOnClickListener {
             val location = findViewById<AppCompatTextView>(R.id.search_location_field).text
-            startActivityForResult(Intent(this, LocationFilter::class.java).putExtra("search_query", location), LOCATION_REQ_CODE) }
+            startActivityForResult(Intent(this, LocationFilter::class.java).putExtra("search_query", location), LOCATION_REQ_CODE)
+        }
 
         findViewById<View>(R.id.search_date_time_field).setOnClickListener {
             val location = findViewById<AppCompatTextView>(R.id.search_date_time_field).text
-            startActivityForResult(Intent(this, DateTimeFilter::class.java).putExtra("search_query", location), DATE_TIME_REQ_CODE) }
+            startActivityForResult(Intent(this, DateTimeFilter::class.java).putExtra("search_query", location), DATE_TIME_REQ_CODE)
+        }
+
+        val mBottomSheetBehavior = BottomSheetBehavior.from(findViewById<View>(R.id.bottom_sheet_filter))
+        val mViewBg = findViewById<View>(R.id.bg)
+
+        findViewById<View>(R.id.filter_price_rating).setOnClickListener { mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED); }
+        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
+                    mViewBg.setVisibility(View.GONE)
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                mViewBg.setVisibility(View.VISIBLE)
+                mViewBg.setAlpha(slideOffset)
+            }
+        })
+
+        //disable clicking because it triggers the background below
+        findViewById<View>(R.id.bottom_sheet_filter).setOnTouchListener(OnTouchListener { v, event -> true })
+
+        mViewBg.setOnClickListener { mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED); }
 
         recyclerView = findViewById<RecyclerView>(R.id.search_result_recycler);
         recyclerView?.layoutManager = CustomLinearLayoutManager(this);

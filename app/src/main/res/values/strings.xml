@@ -13,6 +13,14 @@
     <string name="date_filter_apply_button">Apply</string>
     <string name="date_filter_date_label">Date</string>
     <string name="date_filter_time_label">Time</string>
+    <string name="bottom_sheet_sort">Sort</string>
+    <string name="bottom_sheet_recommended">Recommended</string>
+    <string name="bottom_sheet_max_price">Max. Price</string>
+    <string name="bottom_sheet_any_price">Any Price</string>
+    <string name="bottom_sheet_min_rating">Min. Rating</string>
+    <string name="bottom_sheet_off_peak">Only off peak and last minute discounts</string>
+    <string name="bottom_sheet_top_rated">Only Top Rated venues</string>
+    <string name="bottom_sheet_apply_filters_button">Apply filters</string>
 
 
 </resources>
