@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:grid="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:colorBackground"
@@ -44,15 +45,17 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/apply_date_filter"
+        android:layout_below="@+id/app_bar_layout"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/time_section"
@@ -67,7 +70,7 @@
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
-                    android:text="Time"
+                    android:text="@string/date_filter_time_label"
                     android:textSize="17sp" />
 
                 <Space
@@ -79,7 +82,7 @@
                     android:id="@+id/filter_hour_section_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Any time"
+                    android:text="@string/date_filter_any_time"
                     android:textColor="#FF5555"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -141,7 +144,7 @@
                     android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
-                    android:text="Date"
+                    android:text="@string/date_filter_date_label"
                     android:textSize="17sp" />
 
                 <Space
@@ -153,7 +156,7 @@
                     android:id="@+id/filter_day_section_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Any day"
+                    android:text="@string/date_filter_any_day"
                     android:textColor="#FF5555"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -182,8 +185,8 @@
                     android:id="@+id/date_filter_today"
                     style="@style/ToggleButton"
                     android:layout_width="0dp"
-                    android:textOff="Today"
-                    android:textOn="Today"
+                    android:textOff="@string/date_filter_today"
+                    android:textOn="@string/date_filter_today"
                     app:layout_columnWeight="1"
                     app:layout_gravity="fill_horizontal" />
 
@@ -191,8 +194,8 @@
                     android:id="@+id/date_filter_tomorrow"
                     style="@style/ToggleButton"
                     android:layout_width="0dp"
-                    android:textOff="Tomorrow"
-                    android:textOn="Tomorrow"
+                    android:textOff="@string/date_filter_tomorrow"
+                    android:textOn="@string/date_filter_tomorrow"
                     app:layout_columnWeight="1"
                     grid:layout_gravity="fill_horizontal" />
 
@@ -200,8 +203,8 @@
                     android:id="@+id/date_filter_three_days"
                     style="@style/ToggleButton"
                     android:layout_width="0dp"
-                    android:textOff="Next 3 days"
-                    android:textOn="Next 3 days"
+                    android:textOff="@string/date_filter_next_three_days"
+                    android:textOn="@string/date_filter_next_three_days"
                     app:layout_column="0"
                     app:layout_columnWeight="1"
                     app:layout_gravity="fill_horizontal"
@@ -211,8 +214,8 @@
                     android:id="@+id/date_filter_choose_day"
                     style="@style/ToggleButton"
                     android:layout_width="0dp"
-                    android:textOff="Choose day..."
-                    android:textOn="Choose day..."
+                    android:textOff="@string/date_filter_choose_day"
+                    android:textOn="@string/date_filter_choose_day"
                     app:layout_column="1"
                     app:layout_columnWeight="1"
                     app:layout_gravity="fill_horizontal"
@@ -229,4 +232,17 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+
+    <Button
+        android:id="@+id/apply_date_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
+        android:foreground="@drawable/ripple"
+        android:background="@drawable/border_drawable"
+        android:backgroundTint="#FF0000"
+        android:textColor="#FFFFFF"
+        android:text="@string/date_filter_apply_button" />
+</RelativeLayout>

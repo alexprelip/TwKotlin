@@ -5,6 +5,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -39,6 +40,7 @@ class DateTimeFilter : AppCompatActivity() {
         selectedDay = resources.getString(R.string.date_filter_any_day)
         selectedTime = resources.getString(R.string.date_filter_any_time)
 
+        //TODO update the time and date with values comping from the prev activity
         val queryStr = intent.extras?.getString("search_query")
 
         findViewById<TextView>(R.id.date_time_query_field).setText(queryStr)
@@ -49,6 +51,8 @@ class DateTimeFilter : AppCompatActivity() {
         findViewById<View>(R.id.time_section).setOnClickListener {
             clear_time.visibility = View.VISIBLE
             time_pickers.visibility = View.VISIBLE
+            selectedTime = "${pickerHours[findViewById<NumberPicker>(R.id.hour_picker_from).value]} to ${pickerHours[findViewById<NumberPicker>(R.id.hour_picker_to).value]}"
+            mergeTime()
         }
 
         findViewById<View>(R.id.clear_time).setOnClickListener {
@@ -70,6 +74,11 @@ class DateTimeFilter : AppCompatActivity() {
             selectedDay = resources.getString(R.string.date_filter_any_day)
             filter_day_section_label.text = resources.getString(R.string.date_filter_any_day)
             mergeTime()
+        }
+
+        findViewById<Button>(R.id.apply_date_filter).setOnClickListener {
+            //TODO create the filter timestamps and set them as result
+            finish()
         }
 
         findViewById<AppCompatToggleButton>(R.id.date_filter_today).setOnCheckedChangeListener { view, isChecked ->

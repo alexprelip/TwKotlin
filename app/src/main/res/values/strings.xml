@@ -9,6 +9,10 @@
     <string name="date_filter_next_three_days">Next 3 days</string>
     <string name="date_filter_any_time">Any time</string>
     <string name="date_filter_any_day">Any day</string>
+    <string name="date_filter_choose_day">Choose day...</string>
+    <string name="date_filter_apply_button">Apply</string>
+    <string name="date_filter_date_label">Date</string>
+    <string name="date_filter_time_label">Time</string>
 
 
 </resources>
