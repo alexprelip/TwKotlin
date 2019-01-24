@@ -24,22 +24,27 @@ class DateTimeFilter : AppCompatActivity() {
 
     private lateinit var weekDays: Array<String>
     private lateinit var monthsArray: Array<String>
+    private val pickerHours = Array(25) { "" }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.date_time_filter_layout)
 
+        for (i in 0..24) {
+            pickerHours[i] = "$i:00"
+        }
+
         weekDays = resources.getStringArray(R.array.week_days_array_full)
         monthsArray = resources.getStringArray(R.array.months_array)
+        selectedDay = resources.getString(R.string.date_filter_any_day)
+        selectedTime = resources.getString(R.string.date_filter_any_time)
+
         val queryStr = intent.extras?.getString("search_query")
 
         findViewById<TextView>(R.id.date_time_query_field).setText(queryStr)
 
-        findViewById<RecyclerView>(R.id.date_picker_recycler).adapter = CalendarAdapter(Calendar.getInstance(), 3, this)
-        { day, month, year -> datePicked(day, month, year) }
-        findViewById<RecyclerView>(R.id.date_picker_recycler).layoutManager = GridLayoutManager(this, 7, RecyclerView.VERTICAL, false)
-        findViewById<RecyclerView>(R.id.date_picker_recycler).addItemDecoration(CalendarItemDecoration(this))
-
+        setupCalendarRecycler()
+        setupNumberPickers()
 
         findViewById<View>(R.id.time_section).setOnClickListener {
             clear_time.visibility = View.VISIBLE
@@ -49,13 +54,9 @@ class DateTimeFilter : AppCompatActivity() {
         findViewById<View>(R.id.clear_time).setOnClickListener {
             clear_time.visibility = View.GONE
             time_pickers.visibility = View.GONE
+            selectedTime = resources.getString(R.string.date_filter_any_time)
+            mergeTime()
         }
-
-        findViewById<NumberPicker>(R.id.hour_picker_from).minValue = 0;
-        findViewById<NumberPicker>(R.id.hour_picker_from).maxValue = 23;
-
-        findViewById<NumberPicker>(R.id.hour_picker_to).minValue = 0;
-        findViewById<NumberPicker>(R.id.hour_picker_to).maxValue = 23;
 
         findViewById<View>(R.id.date_section).setOnClickListener {
             date_pickers.visibility = View.VISIBLE
@@ -66,7 +67,8 @@ class DateTimeFilter : AppCompatActivity() {
             date_pickers.visibility = View.GONE
             date_picker_recycler.visibility = View.GONE
             unToggleButtons()
-            selectedDay = "Any day"
+            selectedDay = resources.getString(R.string.date_filter_any_day)
+            filter_day_section_label.text = resources.getString(R.string.date_filter_any_day)
             mergeTime()
         }
 
@@ -84,7 +86,61 @@ class DateTimeFilter : AppCompatActivity() {
         }
     }
 
-    fun datePicked(day: Int, month: Int, year: Int) {
+    private fun setupNumberPickers() {
+        val pickerFrom = findViewById<NumberPicker>(R.id.hour_picker_from)
+        pickerFrom.displayedValues = pickerHours
+        pickerFrom.minValue = 0;
+        pickerFrom.maxValue = 23;
+        pickerFrom.setValue(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+        pickerFrom.wrapSelectorWheel = false
+        pickerFrom.invalidate()
+
+        val pickerTo = findViewById<NumberPicker>(R.id.hour_picker_to)
+        pickerTo.displayedValues = pickerHours.copyOfRange(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1, pickerHours.size)
+        pickerTo.minValue = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1
+        pickerTo.maxValue = 24
+        pickerTo.value = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 2
+        pickerTo.wrapSelectorWheel = false
+        pickerTo.invalidate()
+
+        pickerFrom.setOnValueChangedListener { picker, oldVal, newVal ->
+            if (pickerTo.value == newVal) {
+                setPickerMin(findViewById(R.id.hour_picker_to), newVal + 2)
+            } else {
+                setPickerMin(findViewById(R.id.hour_picker_to), newVal + 1)
+            }
+            selectedTime = "${pickerHours[pickerFrom.value]} to ${pickerHours[pickerTo.value]}"
+            mergeTime()
+        }
+
+        pickerTo.setOnValueChangedListener { picker, oldVal, newVal ->
+            selectedTime = "${pickerHours[pickerFrom.value]} to ${pickerHours[pickerTo.value]}"
+            mergeTime()
+        }
+
+    }
+
+    private fun setupCalendarRecycler() {
+        val calendarRecycler = findViewById<RecyclerView>(R.id.date_picker_recycler);
+        calendarRecycler.adapter = CalendarAdapter(Calendar.getInstance(), 3, this)
+        { day, month, year -> datePicked(day, month, year) }
+        calendarRecycler.layoutManager = GridLayoutManager(this, 7, RecyclerView.VERTICAL, false)
+        calendarRecycler.addItemDecoration(CalendarItemDecoration(this))
+    }
+
+    private fun setPickerMin(numberPicker: NumberPicker, min: Int) {
+        if (min <= numberPicker.maxValue) {
+            if (min < numberPicker.minValue) {
+                numberPicker.displayedValues = pickerHours.copyOfRange(min, pickerHours.size)
+                numberPicker.minValue = min
+            } else {
+                numberPicker.minValue = min
+                numberPicker.displayedValues = pickerHours.copyOfRange(min, pickerHours.size)
+            }
+        }
+    }
+
+    private fun datePicked(day: Int, month: Int, year: Int) {
         Log.d("alexp", "datePicked: $day, $month, $year")
         clear_date.visibility = View.VISIBLE
         val date = Calendar.getInstance()
@@ -92,11 +148,11 @@ class DateTimeFilter : AppCompatActivity() {
         if (date.get(Calendar.DAY_OF_MONTH) == day
                 && date.get(Calendar.MONTH) == month
                 && date.get(Calendar.YEAR) == year) {
-            selectedDay = "Today"
+            selectedDay = resources.getString(R.string.date_filter_today)
         } else if (date.get(Calendar.DAY_OF_MONTH) + 1 == day
                 && date.get(Calendar.MONTH) == month
                 && date.get(Calendar.YEAR) == year) {
-            selectedDay = "Tomorrow"
+            selectedDay = resources.getString(R.string.date_filter_tomorrow)
         } else if (day - date.get(Calendar.DAY_OF_MONTH) < 7
                 && date.get(Calendar.MONTH) == month
                 && date.get(Calendar.YEAR) == year) {
@@ -109,7 +165,7 @@ class DateTimeFilter : AppCompatActivity() {
             dayOfWeek = if (dayOfWeek == 1) 6 else dayOfWeek - 2
             selectedDay = weekDays[dayOfWeek]
         } else {
-            selectedDay = day.toString() + " " + monthsArray[month]
+            selectedDay = resources.getString(R.string.date_filter_day_month, day.toString(), monthsArray[month])
         }
         mergeTime()
     }
@@ -122,7 +178,7 @@ class DateTimeFilter : AppCompatActivity() {
 
     private fun handleToggleClick(button: AppCompatToggleButton, checked: Boolean, dayMode: DAY_MODE) {
         if (!checked) {
-            selectedDay = "Any time"
+            selectedDay = resources.getString(R.string.date_filter_any_day)
             date_picker_recycler.visibility = View.GONE
             mergeTime()
             return
@@ -134,13 +190,13 @@ class DateTimeFilter : AppCompatActivity() {
 
         when {
             dayMode == DAY_MODE.TODAY -> {
-                selectedDay = "Today "
+                selectedDay = resources.getString(R.string.date_filter_today)
             }
             dayMode == DAY_MODE.TOMORROW -> {
-                selectedDay = "Tomorrow "
+                selectedDay = resources.getString(R.string.date_filter_tomorrow)
             }
             dayMode == DAY_MODE.THREE_DAYS -> {
-                selectedDay = "Next 3 days "
+                selectedDay = resources.getString(R.string.date_filter_next_three_days)
             }
             dayMode == DAY_MODE.CHOOSE_DAY -> {
                 date_picker_recycler.visibility = View.VISIBLE
@@ -159,7 +215,16 @@ class DateTimeFilter : AppCompatActivity() {
     }
 
     private fun mergeTime() {
-        mergedTime = if (selectedDay.equals("any time")) "" else selectedDay + selectedTime;
+
+        if (selectedDay.equals(resources.getString(R.string.date_filter_any_day))) {
+            mergedTime = selectedTime
+        } else if (selectedTime.equals(resources.getString(R.string.date_filter_any_time))) {
+            mergedTime = selectedDay
+        } else {
+            mergedTime = "$selectedDay $selectedTime";
+        }
         date_time_query_field.text = mergedTime
+        filter_day_section_label.text = selectedDay
+        filter_hour_section_label.text = selectedTime
     }
 }

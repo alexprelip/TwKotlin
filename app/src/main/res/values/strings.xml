@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">TwKotlin</string>
+
+    <!--concats the day and the month corresponding to a date, e.g. 31 January-->
+    <string name="date_filter_day_month">%s %s</string>
+
+    <string name="date_filter_today">Today</string>
+    <string name="date_filter_tomorrow">Tomorrow</string>
+    <string name="date_filter_next_three_days">Next 3 days</string>
+    <string name="date_filter_any_time">Any time</string>
+    <string name="date_filter_any_day">Any day</string>
+
+
 </resources>
