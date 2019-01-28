@@ -2,6 +2,7 @@ package alexpr.co.uk.twkotlin.search
 
 import alexpr.co.uk.twkotlin.R
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,13 +14,17 @@ import androidx.appcompat.widget.AppCompatToggleButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.date_time_filter_layout.*
+import org.joda.time.DateTime
+import org.joda.time.Days
 import java.util.*
 
 
 class DateTimeFilter : AppCompatActivity() {
-    var mergedTime: String = ""
-    var selectedDay: String = ""
-    var selectedTime: String = ""
+    var hourStart: Int = -1
+    var hourEnd: Int = -1
+
+    var selDateStart: DateTime? = null
+    var selDateEnd: DateTime? = null
 
     enum class DAY_MODE { TODAY, TOMORROW, THREE_DAYS, CHOOSE_DAY }
 
@@ -37,8 +42,6 @@ class DateTimeFilter : AppCompatActivity() {
 
         weekDays = resources.getStringArray(R.array.week_days_array_full)
         monthsArray = resources.getStringArray(R.array.months_array)
-        selectedDay = resources.getString(R.string.date_filter_any_day)
-        selectedTime = resources.getString(R.string.date_filter_any_time)
 
         //TODO update the time and date with values comping from the prev activity
         val queryStr = intent.extras?.getString("search_query")
@@ -47,18 +50,21 @@ class DateTimeFilter : AppCompatActivity() {
 
         setupCalendarRecycler()
         setupNumberPickers()
+        mergeTime()
 
         findViewById<View>(R.id.time_section).setOnClickListener {
             clear_time.visibility = View.VISIBLE
             time_pickers.visibility = View.VISIBLE
-            selectedTime = "${pickerHours[findViewById<NumberPicker>(R.id.hour_picker_from).value]} to ${pickerHours[findViewById<NumberPicker>(R.id.hour_picker_to).value]}"
+            hourStart = findViewById<NumberPicker>(R.id.hour_picker_from).value
+            hourEnd = findViewById<NumberPicker>(R.id.hour_picker_to).value
             mergeTime()
         }
 
         findViewById<View>(R.id.clear_time).setOnClickListener {
             clear_time.visibility = View.GONE
             time_pickers.visibility = View.GONE
-            selectedTime = resources.getString(R.string.date_filter_any_time)
+            hourStart = -1
+            hourEnd = -1
             mergeTime()
         }
 
@@ -71,14 +77,8 @@ class DateTimeFilter : AppCompatActivity() {
             date_pickers.visibility = View.GONE
             date_picker_recycler.visibility = View.GONE
             unToggleButtons()
-            selectedDay = resources.getString(R.string.date_filter_any_day)
             filter_day_section_label.text = resources.getString(R.string.date_filter_any_day)
             mergeTime()
-        }
-
-        findViewById<Button>(R.id.apply_date_filter).setOnClickListener {
-            //TODO create the filter timestamps and set them as result
-            finish()
         }
 
         findViewById<AppCompatToggleButton>(R.id.date_filter_today).setOnCheckedChangeListener { view, isChecked ->
@@ -93,6 +93,23 @@ class DateTimeFilter : AppCompatActivity() {
         findViewById<AppCompatToggleButton>(R.id.date_filter_choose_day).setOnCheckedChangeListener { view, isChecked ->
             handleToggleClick(view as AppCompatToggleButton, isChecked, DAY_MODE.CHOOSE_DAY)
         }
+
+        findViewById<Button>(R.id.apply_date_filter).setOnClickListener {
+            val resultIntent = Intent()
+            if (hourStart != -1 && hourEnd != -1) {
+                resultIntent.putExtra("hour_start", hourStart)
+                    .putExtra("hour_end", hourEnd)
+            }
+            if (selDateStart != null) {
+                resultIntent.putExtra("day_start", selDateStart)
+            }
+
+            if (selDateEnd != null) {
+                resultIntent.putExtra("day_end", selDateEnd)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
     private fun setupNumberPickers() {
@@ -105,7 +122,8 @@ class DateTimeFilter : AppCompatActivity() {
         pickerFrom.invalidate()
 
         val pickerTo = findViewById<NumberPicker>(R.id.hour_picker_to)
-        pickerTo.displayedValues = pickerHours.copyOfRange(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1, pickerHours.size)
+        pickerTo.displayedValues =
+                pickerHours.copyOfRange(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1, pickerHours.size)
         pickerTo.minValue = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 1
         pickerTo.maxValue = 24
         pickerTo.value = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + 2
@@ -118,12 +136,14 @@ class DateTimeFilter : AppCompatActivity() {
             } else {
                 setPickerMin(findViewById(R.id.hour_picker_to), newVal + 1)
             }
-            selectedTime = "${pickerHours[pickerFrom.value]} to ${pickerHours[pickerTo.value]}"
+            hourStart = pickerFrom.value
+            hourEnd = pickerTo.value
             mergeTime()
         }
 
         pickerTo.setOnValueChangedListener { picker, oldVal, newVal ->
-            selectedTime = "${pickerHours[pickerFrom.value]} to ${pickerHours[pickerTo.value]}"
+            hourStart = pickerFrom.value
+            hourEnd = pickerTo.value
             mergeTime()
         }
 
@@ -152,42 +172,14 @@ class DateTimeFilter : AppCompatActivity() {
     private fun datePicked(day: Int, month: Int, year: Int) {
         Log.d("alexp", "datePicked: $day, $month, $year")
         clear_date.visibility = View.VISIBLE
-        val date = Calendar.getInstance()
+        selDateStart = DateTime(year, month + 1, day, 0, 0, 0)
 
-        if (date.get(Calendar.DAY_OF_MONTH) == day
-                && date.get(Calendar.MONTH) == month
-                && date.get(Calendar.YEAR) == year) {
-            selectedDay = resources.getString(R.string.date_filter_today)
-        } else if (date.get(Calendar.DAY_OF_MONTH) + 1 == day
-                && date.get(Calendar.MONTH) == month
-                && date.get(Calendar.YEAR) == year) {
-            selectedDay = resources.getString(R.string.date_filter_tomorrow)
-        } else if (day - date.get(Calendar.DAY_OF_MONTH) < 7
-                && date.get(Calendar.MONTH) == month
-                && date.get(Calendar.YEAR) == year) {
-
-            date.set(Calendar.DAY_OF_MONTH, day)
-
-            var dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
-            /** The default first day of week is {@link java.util.Calendar#SUNDAY}.
-             * It can be changed, but it's more likely to introduce a bug if someone forgets to do so */
-            dayOfWeek = if (dayOfWeek == 1) 6 else dayOfWeek - 2
-            selectedDay = weekDays[dayOfWeek]
-        } else {
-            selectedDay = resources.getString(R.string.date_filter_day_month, day.toString(), monthsArray[month])
-        }
         mergeTime()
-    }
-
-    private fun locationPicked(location: String) {
-        Log.e("alexp", "pickedLocation: $location")
-        setResult(Activity.RESULT_OK, intent.putExtra("search_query", location))
-        finish()
     }
 
     private fun handleToggleClick(button: AppCompatToggleButton, checked: Boolean, dayMode: DAY_MODE) {
         if (!checked) {
-            selectedDay = resources.getString(R.string.date_filter_any_day)
+            selDateStart = null
             date_picker_recycler.visibility = View.GONE
             mergeTime()
             return
@@ -199,17 +191,21 @@ class DateTimeFilter : AppCompatActivity() {
 
         when {
             dayMode == DAY_MODE.TODAY -> {
-                selectedDay = resources.getString(R.string.date_filter_today)
+                selDateStart = DateTime.now()
+                selDateEnd = null
             }
             dayMode == DAY_MODE.TOMORROW -> {
-                selectedDay = resources.getString(R.string.date_filter_tomorrow)
+                selDateStart = DateTime.now().plusDays(1)
+                selDateEnd = null
             }
             dayMode == DAY_MODE.THREE_DAYS -> {
-                selectedDay = resources.getString(R.string.date_filter_next_three_days)
+                selDateStart = DateTime.now()
+                selDateEnd = DateTime.now().plusDays(3)
             }
             dayMode == DAY_MODE.CHOOSE_DAY -> {
                 date_picker_recycler.visibility = View.VISIBLE
                 (date_picker_recycler.adapter as CalendarAdapter).setSelectedDay(Calendar.getInstance())
+                selDateEnd = null
             }
         }
         mergeTime();
@@ -225,15 +221,48 @@ class DateTimeFilter : AppCompatActivity() {
 
     private fun mergeTime() {
 
-        if (selectedDay.equals(resources.getString(R.string.date_filter_any_day))) {
+        var displayDay = resources.getString(R.string.date_filter_any_day)
+        var selectedTime = resources.getString(R.string.date_filter_any_time)
+        var mergedTime = ""
+
+        if (selDateStart != null && selDateEnd != null) {
+            displayDay = resources.getString(R.string.date_filter_next_three_days)
+        } else if (selDateStart != null) {
+            val dateNow = DateTime.now()
+            val d = Days.daysBetween(dateNow.withTimeAtStartOfDay(), selDateStart!!.withTimeAtStartOfDay())
+
+            when {
+                d.days == 0 -> {
+                    displayDay = resources.getString(R.string.date_filter_today)
+                }
+                d.days == 1 -> {
+                    displayDay = resources.getString(R.string.date_filter_tomorrow)
+                }
+                d.days < 7 -> {
+                    displayDay = weekDays[selDateStart!!.dayOfWeek - 1]
+                }
+                d.days >= 7 -> {
+                    displayDay = "${selDateStart!!.dayOfMonth().asText} ${selDateStart!!.monthOfYear().asText}"
+                }
+            }
+        }
+
+        if (hourStart == -1 || hourEnd == -1) {
+            selectedTime = resources.getString(R.string.date_filter_any_time)
+        } else {
+            selectedTime = "${pickerHours[hourStart]} to ${pickerHours[hourEnd]}"
+        }
+
+        if (displayDay.equals(resources.getString(R.string.date_filter_any_day))) {
             mergedTime = selectedTime
         } else if (selectedTime.equals(resources.getString(R.string.date_filter_any_time))) {
-            mergedTime = selectedDay
+            mergedTime = displayDay
         } else {
-            mergedTime = "$selectedDay $selectedTime";
+            mergedTime = "$displayDay $selectedTime";
         }
+
         date_time_query_field.text = mergedTime
-        filter_day_section_label.text = selectedDay
+        filter_day_section_label.text = displayDay
         filter_hour_section_label.text = selectedTime
     }
 }
