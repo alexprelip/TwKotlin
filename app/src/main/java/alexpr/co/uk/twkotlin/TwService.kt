@@ -28,6 +28,6 @@ interface TwService {
     @GET("home/menu")
     fun getHomeMenu(): Observable<MainMenu>
 
-    @GET("places/{treatmentType}/{offerType}/{location}/{subLocation}")
-    fun getPlaces(@Path("treatmentType") treatmentType:List<String>, @Path("offerType") offerType:String, @Path("location") location:String, @Path("subLocation") subLocation:String): Observable<MainMenu>
+    @GET("places/{path}")
+    fun getPlaces(@Path(value="path", encoded = true) path: String): Observable<MainMenu>
 }

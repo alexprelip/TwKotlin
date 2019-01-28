@@ -1,11 +1,18 @@
 package alexpr.co.uk.twkotlin;
 
-import alexpr.co.uk.twkotlin.network.stubs.StubGenerator;
+import android.util.Log;
+
 import com.google.gson.Gson;
-import okhttp3.*;
 
 import java.io.IOException;
 import java.net.URI;
+
+import alexpr.co.uk.twkotlin.network.stubs.StubGenerator;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.Protocol;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class FakeInterceptor implements Interceptor {
 
@@ -15,7 +22,7 @@ public class FakeInterceptor implements Interceptor {
         if (BuildConfig.DEBUG) {
             String responseString="";
             final URI uri = chain.request().url().uri();
-
+            Log.e("alexp", "reqUri: " + uri);
             switch (uri.getPath()) {
                 case "/home/menu": {
                     responseString = new Gson().toJson(StubGenerator.getMockMainMenu());

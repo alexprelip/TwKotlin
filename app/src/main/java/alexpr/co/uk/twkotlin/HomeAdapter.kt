@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.home_recycler_item.view.*
 
 
-open class HomeAdapter(val items: List<MenuSection>, val context: Context, val clickListener: (String) -> Unit, val sectionClickListener: (Int) -> Unit) :
+open class HomeAdapter(val items: List<MenuSection>, val context: Context, val clickListener: (String, MenuSection) -> Unit, val sectionClickListener: (Int) -> Unit) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     internal enum class Payload {
@@ -45,7 +45,7 @@ open class HomeAdapter(val items: List<MenuSection>, val context: Context, val c
     }
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(menuSection: MenuSection, clickListener: (String) -> Unit, sectionClickListener: (Int) -> Unit) {
+        fun bind(menuSection: MenuSection, clickListener: (String, MenuSection) -> Unit, sectionClickListener: (Int) -> Unit) {
             Picasso.get().load(menuSection.imageUri)
                     .placeholder(android.R.drawable.ic_menu_report_image)
                     .fit()
@@ -68,7 +68,7 @@ open class HomeAdapter(val items: List<MenuSection>, val context: Context, val c
             view.home_inner_recycler.layoutManager = object : LinearLayoutManager(view.context) {
                 override fun canScrollVertically() = false
             }
-            view.home_inner_recycler.adapter = HomeInnerAdapter(menuSection.menuItems, view.context, clickListener)
+            view.home_inner_recycler.adapter = HomeInnerAdapter(menuSection, view.context, clickListener)
         }
     }
 }

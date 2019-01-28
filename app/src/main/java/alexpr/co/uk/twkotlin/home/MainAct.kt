@@ -1,15 +1,19 @@
-package alexpr.co.uk.twkotlin
+package alexpr.co.uk.twkotlin.home
 
+import alexpr.co.uk.twkotlin.CustomLinearLayoutManager
+import alexpr.co.uk.twkotlin.HomeAdapter
+import alexpr.co.uk.twkotlin.R
+import alexpr.co.uk.twkotlin.TwApplication
 import alexpr.co.uk.twkotlin.models.MainMenu
+import alexpr.co.uk.twkotlin.models.MenuSection
 import alexpr.co.uk.twkotlin.search.SearchResult
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class MainAct : AppCompatActivity() {
 
@@ -23,22 +27,21 @@ class MainAct : AppCompatActivity() {
         recyclerView = findViewById(R.id.home_recycler);
         recyclerView?.layoutManager = CustomLinearLayoutManager(this);
 
-        TwApplication.twService.getHomeMenu().observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { response: MainMenu ->
-                    Log.e("alexp", "request successful: " + response)
-                    recyclerView?.adapter = HomeAdapter(
-                        response.menuList,
-                        this,
-                        { str: String -> handleItemClick(str) },
-                        { int: Int -> handleSectionClick(int) });
-                },
-                { t: Throwable -> Log.e("alexp", "request failed: " + t.message) })
+        val viewModel = MainActViewModel(TwApplication.twService)
+        viewModel.getHomeData().observe(this, Observer { response: MainMenu ->
+            recyclerView?.adapter = HomeAdapter(
+                    response.menuList,
+                    this,
+                    { str: String, section: MenuSection -> handleItemClick(str, section) },
+                    { int: Int -> handleSectionClick(int) })
+        })
     }
 
-    fun handleItemClick(str: String) {
-        Log.e("alexp", "sub section clicked $str");
-        startActivity(Intent(this, SearchResult::class.java).putExtra("search_query", str))
+    fun handleItemClick(str: String, section: MenuSection) {
+        Log.d("alexp", "sub section clicked $str");
+        startActivity(Intent(this, SearchResult::class.java)
+                .putExtra("search_query", str)
+                .putExtra("section", section))
     }
 
     fun handleSectionClick(int: Int) {
