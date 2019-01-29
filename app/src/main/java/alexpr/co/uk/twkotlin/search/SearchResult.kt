@@ -4,6 +4,7 @@ import alexpr.co.uk.twkotlin.CustomLinearLayoutManager
 import alexpr.co.uk.twkotlin.R
 import alexpr.co.uk.twkotlin.TwApplication
 import alexpr.co.uk.twkotlin.models.MenuSection
+import alexpr.co.uk.twkotlin.network.stubs.StubGenerator
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -46,7 +47,7 @@ class SearchResult : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.search_result_recycler);
         recyclerView?.layoutManager = CustomLinearLayoutManager(this);
-//        recyclerView?.adapter = HomeAdapter(ArrayList(), this, { str: String -> handleItemClick(str) }, { int: Int -> handleSectionClick(int) });
+        recyclerView?.adapter = SearchResultAdapter(StubGenerator.getMockPlaces(), this, { str: String -> handleItemClick(str) });
         initClickListeners()
     }
 
@@ -104,8 +105,7 @@ class SearchResult : AppCompatActivity() {
     }
 
     fun handleItemClick(str: String) {
-        Log.e("alexp", "sub section clicked $str");
-        startActivity(Intent(this, SearchResult::class.java).putExtra("search_query", str))
+        Log.e("alexp", "item $str");
     }
 
     fun handleSectionClick(int: Int) {

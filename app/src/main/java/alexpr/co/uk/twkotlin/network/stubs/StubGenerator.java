@@ -6,6 +6,8 @@ import java.util.List;
 import alexpr.co.uk.twkotlin.models.MainMenu;
 import alexpr.co.uk.twkotlin.models.MenuItem;
 import alexpr.co.uk.twkotlin.models.MenuSection;
+import alexpr.co.uk.twkotlin.models.PlaceModel;
+import alexpr.co.uk.twkotlin.models.ServiceModel;
 
 public class StubGenerator {
 
@@ -51,5 +53,19 @@ public class StubGenerator {
         list.add(new MenuSection("https://upload.wikimedia.org/wikipedia/commons/1/1e/Computer_server_rack.jpg", "Body", new ArrayList<MenuItem>()));
 
         return new MainMenu(list);
+    }
+
+    public static List<PlaceModel> getMockPlaces() {
+        List<PlaceModel> list = new ArrayList<>();
+
+        List<ServiceModel>serviceHighlight = new ArrayList<>(3);
+        serviceHighlight.add(new ServiceModel("Service1", "12 min", "£145", "save -30%", "£12"));
+        serviceHighlight.add(new ServiceModel("Service2", "1 min", "£45", "", ""));
+        serviceHighlight.add(new ServiceModel("Service3", "20 min", "£4.5", "", "£12"));
+        list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place1", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));
+        list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place2", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));
+        list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place3", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));
+        list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place4", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));
+        return list;
     }
 }
