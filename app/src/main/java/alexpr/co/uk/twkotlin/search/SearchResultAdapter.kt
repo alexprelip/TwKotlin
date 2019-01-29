@@ -35,7 +35,6 @@ class SearchResultAdapter(val items: List<PlaceModel>, val context: Context, val
         fun bind(place: PlaceModel, clickListener: (String) -> Unit) {
 
             Picasso.get().load(place.imageUrl)
-                    .placeholder(android.R.drawable.ic_menu_report_image)
                     .fit()
                     .centerCrop()
                     .into(view.place_image)

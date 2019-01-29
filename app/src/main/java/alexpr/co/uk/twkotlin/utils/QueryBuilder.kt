@@ -10,7 +10,7 @@ class QueryBuilder(val treatmentGroup: String = "", val treatment: String = "", 
     }
 
     fun buildQuery(): String {
-         return if (treatment.isEmpty()) "" else {"treatment-$treatment/"} +
+         return if (treatment.isEmpty()) "" else {"treatment-${ParseUrlUtil.parseUrlForItem(treatment)}/"} +
          if (treatmentGroup.isEmpty()) "" else {"treatment-group-$treatmentGroup/"} +
          if (hourStart == null) "" else {"time-range-${String.format("%02d00", hourStart)}-to-${String.format("%02d00", hourEnd)}/"} +
          if (dayStart == null) "" else {"available-on-${dayStart.dayOfMonth().asText}-${dayStart.monthOfYear().asText}-${dayStart.year().asText}/"}

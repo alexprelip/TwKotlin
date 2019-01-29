@@ -26,7 +26,7 @@ class HomeInnerAdapter(val items: MenuSection, val context: Context, val clickLi
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         fun bind(menuItem: MenuItem, clickListener: (String, MenuSection) -> Unit) {
             view.home_inner_item.text = menuItem.displayName;
-            view.setOnClickListener { clickListener(menuItem.query, items) }
+            view.setOnClickListener { clickListener(menuItem.displayName, items) }
         }
     }
 

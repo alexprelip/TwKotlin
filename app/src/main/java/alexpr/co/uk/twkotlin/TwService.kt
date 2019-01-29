@@ -1,6 +1,7 @@
 package alexpr.co.uk.twkotlin
 
 import alexpr.co.uk.twkotlin.models.MainMenu
+import alexpr.co.uk.twkotlin.models.PlaceModel
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
@@ -29,5 +30,5 @@ interface TwService {
     fun getHomeMenu(): Observable<MainMenu>
 
     @GET("places/{path}")
-    fun getPlaces(@Path(value="path", encoded = true) path: String): Observable<MainMenu>
+    fun getPlaces(@Path(value="path", encoded = true) path: String): Observable<List<PlaceModel>>
 }
