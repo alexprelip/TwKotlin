@@ -20,5 +20,7 @@
         <activity android:name=".search.SearchQueryFilter" />
         <activity android:name=".search.LocationFilter" />
         <activity android:name=".search.DateTimeFilter" />
+        <activity android:name=".placeDetails.PlaceDetailsActivity"
+            android:theme="@style/PlaceDetails"/>
     </application>
 </manifest>

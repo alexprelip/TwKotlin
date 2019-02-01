@@ -3,6 +3,7 @@ package alexpr.co.uk.twkotlin.search
 import alexpr.co.uk.twkotlin.R
 import alexpr.co.uk.twkotlin.TwApplication
 import alexpr.co.uk.twkotlin.models.MenuSection
+import alexpr.co.uk.twkotlin.placeDetails.PlaceDetailsActivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -111,6 +112,7 @@ class SearchResult : AppCompatActivity() {
 
     fun handleItemClick(str: String) {
         Log.e("alexp", "item $str");
+        startActivity(Intent(this, PlaceDetailsActivity::class.java))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
