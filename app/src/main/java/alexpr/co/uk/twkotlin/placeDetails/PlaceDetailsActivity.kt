@@ -1,6 +1,9 @@
 package alexpr.co.uk.twkotlin.placeDetails
 
 import alexpr.co.uk.twkotlin.R
+import alexpr.co.uk.twkotlin.models.Section
+import alexpr.co.uk.twkotlin.models.ServiceItem
+import alexpr.co.uk.twkotlin.models.ServiceModel
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.graphics.Color
@@ -35,5 +38,77 @@ class PlaceDetailsActivity : AppCompatActivity() {
                 search_query_field.setAlpha(.0f)
             }
         })
+        val sections = ArrayList<Section>()
+        var section = Section("January Beauty Sale", ArrayList())
+        var serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1January", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1January", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2January", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3January", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2January", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1January", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2January", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3January", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+        sections.add(section)
+
+
+
+        section = Section("February Beauty Sale", ArrayList())
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1February", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1February", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2February", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3February", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2February", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1January", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2January", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3January", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+        sections.add(section)
+
+
+
+        section = Section("March Beauty Sale", ArrayList())
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1March", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1March", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2March", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3March", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2March", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1March", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2March", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3March", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+        sections.add(section)
+
+
+
+        section = Section("April Beauty Sale", ArrayList())
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1April", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1April", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2April", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3April", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+
+        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2April", "20 min", "£30", "-25%", "25"), "details?", "Nails")
+        serviceItem.serviceSubItem.add(ServiceModel("SubService1April", "21 min", "£31", "-5%", "15"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService2April", "22 min", "£32", "-15%", "25"))
+        serviceItem.serviceSubItem.add(ServiceModel("SubService3April", "23 min", "£33", "-35%", "35"))
+        section.serviceItem.add(serviceItem)
+        sections.add(section)
+
+        generateList(sections)
+
+    }
+
+    private fun generateList(list: List<Section>) {
+        for (section in list) {
+            main_container.addView(SectionView(this, section))
+        }
+
     }
 }
