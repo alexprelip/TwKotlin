@@ -4,4 +4,5 @@
     android:propertyName="scaleY"
     android:valueTo="1"
     android:valueFrom="0.1"
-    android:valueType="floatType" />
+    android:valueType="floatType" >
+</objectAnimator>
