@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:attrs="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#F9F9F9"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -82,7 +83,6 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        android:background="#EEEEEE"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -90,6 +90,7 @@
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
 
             android:orientation="vertical">
 

@@ -13,26 +13,25 @@
         android:background="#CCCCCC" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/sub_service_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/service_price"
+        android:layout_toStartOf="@id/sub_service_price"
         android:layout_toEndOf="@id/vertical_border"
-        android:layout_weight="1"
         android:text="sample name" />
 
     <TextView
-        android:id="@+id/service_duration"
+        android:id="@+id/sub_service_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/sub_service_title"
         android:layout_toEndOf="@id/vertical_border"
         android:gravity="center"
         android:text="sample duration"
         android:textColor="#AAAAAA" />
 
     <TextView
-        android:id="@+id/service_price"
+        android:id="@+id/sub_service_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

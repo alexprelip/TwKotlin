@@ -5,6 +5,7 @@ import alexpr.co.uk.twkotlin.models.Section
 import alexpr.co.uk.twkotlin.models.ServiceItem
 import alexpr.co.uk.twkotlin.models.ServiceModel
 import android.animation.ArgbEvaluator
+import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.os.Bundle
@@ -106,9 +107,9 @@ class PlaceDetailsActivity : AppCompatActivity() {
     }
 
     private fun generateList(list: List<Section>) {
+        main_container.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         for (section in list) {
             main_container.addView(SectionView(this, section))
         }
-
     }
 }
