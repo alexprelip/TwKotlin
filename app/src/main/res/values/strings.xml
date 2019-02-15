@@ -21,6 +21,7 @@
     <string name="bottom_sheet_off_peak">Only off peak and last minute discounts</string>
     <string name="bottom_sheet_top_rated">Only Top Rated venues</string>
     <string name="bottom_sheet_apply_filters_button">Apply filters</string>
+    <string name="review_count_label">%s reviews</string>
 
 
 </resources>

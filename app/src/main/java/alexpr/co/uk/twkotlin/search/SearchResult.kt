@@ -112,7 +112,7 @@ class SearchResult : AppCompatActivity() {
 
     fun handleItemClick(str: String) {
         Log.e("alexp", "item $str");
-        startActivity(Intent(this, PlaceDetailsActivity::class.java))
+        startActivity(Intent(this, PlaceDetailsActivity::class.java).putExtra("place_name", str))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

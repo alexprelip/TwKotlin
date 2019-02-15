@@ -1,9 +1,8 @@
 package alexpr.co.uk.twkotlin.placeDetails
 
 import alexpr.co.uk.twkotlin.R
+import alexpr.co.uk.twkotlin.TwApplication
 import alexpr.co.uk.twkotlin.models.Section
-import alexpr.co.uk.twkotlin.models.ServiceItem
-import alexpr.co.uk.twkotlin.models.ServiceModel
 import android.animation.ArgbEvaluator
 import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
@@ -12,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -19,9 +19,10 @@ import kotlinx.android.synthetic.main.place_details_activity.*
 
 
 class PlaceDetailsActivity : AppCompatActivity() {
-    private lateinit var sections: ArrayList<Section>
+    private lateinit var sections: List<Section>
 
     private var mBottomSheetBehavior: BottomSheetBehavior<View>? = null
+    private val viewModel: PlaceDetailsViewModel = PlaceDetailsViewModel(TwApplication.twService)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,21 @@ class PlaceDetailsActivity : AppCompatActivity() {
         val anim = ObjectAnimator.ofObject(findViewById<ImageView>(R.id.toolbar_back), "colorFilter", ArgbEvaluator(), Color.parseColor("#FFFFFFFF"), Color.parseColor("#FFFF0000"))
         anim.duration = 1000
 
+        viewModel.placeDetails.observe(this, Observer { placeDetails ->
+            place_name.text = placeDetails.name
+            place_address.text = placeDetails.address
+            place_rating_number.text = placeDetails.rating.toString()
+            place_rating_bar.rating = placeDetails.rating.toFloat()
+            place_review_count.text = getString(R.string.review_count_label, placeDetails.reviewCount)
+        })
+
+        viewModel.placeServices.observe(this, Observer {sections ->
+            this.sections = sections
+            generateList(sections)
+        })
+
+        viewModel.getPlaceDetails(intent.getStringExtra("place_name"))
+        viewModel.getPlaceServices(intent.getStringExtra("place_name"))
 
         app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
             val alpha: Float = ((-p1 * 100 / p0.totalScrollRange / 100f))
@@ -47,71 +63,6 @@ class PlaceDetailsActivity : AppCompatActivity() {
                 search_query_field.setAlpha(.0f)
             }
         })
-        sections = ArrayList<Section>()
-        var section = Section("January Beauty Sale", ArrayList(), false)
-        var serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1January", "20 min", "£30", "-25%", "25", false, 111111), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1January", "21 min", "£31", "-5%", "15", false, 111112))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2January", "22 min", "£32", "-15%", "25", false, 111113))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3January", "23 min", "£33", "-35%", "35", false, 111114))
-        section.serviceItem.add(serviceItem)
-
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2January", "20 min", "£30", "-25%", "25", false, 111115), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1January", "21 min", "£31", "-5%", "15", false, 111116))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2January", "22 min", "£32", "-15%", "25", false, 111117))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3January", "23 min", "£33", "-35%", "35", false, 111118))
-        section.serviceItem.add(serviceItem)
-        sections.add(section)
-
-
-
-        section = Section("February Beauty Sale", ArrayList(), false)
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1February", "20 min", "£30", "-25%", "25", false, 111119), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1February", "21 min", "£31", "-5%", "15", false, 111120))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2February", "22 min", "£32", "-15%", "25", false, 111121))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3February", "23 min", "£33", "-35%", "35", false, 111122))
-        section.serviceItem.add(serviceItem)
-
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2February", "20 min", "£30", "-25%", "25", false, 111123), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1January", "21 min", "£31", "-5%", "15", false, 111124))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2January", "22 min", "£32", "-15%", "25", false, 111125))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3January", "23 min", "£33", "-35%", "35", false, 111126))
-        section.serviceItem.add(serviceItem)
-        sections.add(section)
-
-
-
-        section = Section("March Beauty Sale", ArrayList(), false)
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1March", "20 min", "£30", "-25%", "25", false, 111127), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1March", "21 min", "£31", "-5%", "15", false, 111128))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2March", "22 min", "£32", "-15%", "25", false, 111129))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3March", "23 min", "£33", "-35%", "35", false, 111130))
-        section.serviceItem.add(serviceItem)
-
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2March", "20 min", "£30", "-25%", "25", false, 111131), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1March", "21 min", "£31", "-5%", "15", false, 111132))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2March", "22 min", "£32", "-15%", "25", false, 111133))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3March", "23 min", "£33", "-35%", "35", false, 111134))
-        section.serviceItem.add(serviceItem)
-        sections.add(section)
-
-
-
-        section = Section("April Beauty Sale", ArrayList(), false)
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service1April", "20 min", "£30", "-25%", "25", false, 111135), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1April", "21 min", "£31", "-5%", "15", false, 111136))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2April", "22 min", "£32", "-15%", "25", false, 111137))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3April", "23 min", "£33", "-35%", "35", false, 111138))
-        section.serviceItem.add(serviceItem)
-
-        serviceItem = ServiceItem(ArrayList(), ServiceModel("Service2April", "20 min", "£30", "-25%", "25", false, 111139), "details?", "Nails", false)
-        serviceItem.serviceSubItem.add(ServiceModel("SubService1April", "21 min", "£31", "-5%", "15, false", false, 111140))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService2April", "22 min", "£32", "-15%", "25", false, 111141))
-        serviceItem.serviceSubItem.add(ServiceModel("SubService3April", "23 min", "£33", "-35%", "35", false, 111142))
-        section.serviceItem.add(serviceItem)
-        sections.add(section)
-
-        generateList(sections)
-
     }
 
     private fun generateList(list: List<Section>) {
