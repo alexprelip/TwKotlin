@@ -21,11 +21,11 @@ class SectionView : LinearLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    constructor(context: Context, section: Section) : super(context) {
-        init(section)
+    constructor(context: Context, section: Section, clickListener: (Int) -> Unit) : super(context) {
+        init(section, clickListener)
     }
 
-    private fun init(section: Section) {
+    private fun init(section: Section, clickListener: (Int) -> Unit) {
         View.inflate(context, R.layout.place_details_recycler_item, this)
         section_title.text = section.name
 
@@ -57,7 +57,7 @@ class SectionView : LinearLayout {
         }
 
         for (item in section.serviceItem) {
-            services_container.addView(ServiceView(context, item))
+            services_container.addView(ServiceView(context, item, clickListener))
         }
 
 

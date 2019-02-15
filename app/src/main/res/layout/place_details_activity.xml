@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:attrs="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#F9F9F9"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F9F9F9">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -168,13 +168,55 @@
             </RelativeLayout>
 
             <TextView
-                android:layout_marginTop="1dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:background="#FFFFFF"
                 android:text="POPULAR SERVICES FOR ..." />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        android:elevation="10dp"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/border_drawable"
+            android:backgroundTint="#E87B0E"
+            android:foreground="@drawable/ripple"
+            android:paddingEnd="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Check Availability"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/selected_item_count"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_round_white"
+                android:gravity="center"
+                android:textColor="#E87B0E" />
+        </RelativeLayout>
+
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

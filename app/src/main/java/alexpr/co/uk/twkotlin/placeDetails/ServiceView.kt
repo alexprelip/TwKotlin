@@ -20,18 +20,18 @@ class ServiceView : LinearLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    constructor(context: Context, service: ServiceItem) : super(context) {
-        init(service)
+    constructor(context: Context, service: ServiceItem, clickListener: (Int) -> Unit) : super(context) {
+        init(service, clickListener)
     }
 
-    private fun init(service: ServiceItem) {
+    private fun init(service: ServiceItem, clickListener: (Int) -> Unit) {
         View.inflate(context, R.layout.place_details_recycler_item2, this)
         service_title.text = service.serviceModel.serviceName
         service_duration.text = service.serviceModel.duration
         service_price.text = service.serviceModel.price
 
         for (serviceSubItem in service.serviceSubItem) {
-            sub_services_container.addView(ItemView(context, serviceSubItem))
+            sub_services_container.addView(ItemView(context, serviceSubItem, clickListener))
         }
 
         sub_item_parent_view.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)

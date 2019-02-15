@@ -16,15 +16,21 @@ class ItemView : LinearLayout {
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    constructor(context: Context, service: ServiceModel) : super(context) {
-        init(service)
+    constructor(context: Context, service: ServiceModel, clickListener: (Int) -> Unit) : super(context) {
+        init(service, clickListener)
     }
 
-    private fun init(service: ServiceModel) {
+    private fun init(service: ServiceModel, clickListener: (Int) -> Unit) {
         View.inflate(context, R.layout.place_details_recycler_item3, this)
         sub_service_title.text = service.serviceName
         sub_service_duration.text = service.duration
         sub_service_price.text = service.price
+
+        if (service.selected) {
+            item_selected_indicator.setImageResource(R.drawable.ic_check_circle_black_24dp)
+        } else {
+            item_selected_indicator.setImageResource(R.drawable.ic_add_circle_outline_black_24dp)
+        }
 
         item_view_root.setOnClickListener {
             service.selected = !service.selected
@@ -33,6 +39,7 @@ class ItemView : LinearLayout {
             } else {
                 item_selected_indicator.setImageResource(R.drawable.ic_add_circle_outline_black_24dp)
             }
+            clickListener(service.serviceId)
         }
 
 
