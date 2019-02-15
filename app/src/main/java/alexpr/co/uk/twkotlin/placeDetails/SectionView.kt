@@ -30,11 +30,12 @@ class SectionView : LinearLayout {
         section_title.text = section.name
 
         services_container.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        services_container.visibility = if (section.showOpen) View.VISIBLE else View.GONE
+        services_collapse.rotation = if (section.showOpen) 0f else -90f
 
-        var showHide = false
         asdf.setOnClickListener {
-
-            if (showHide) {
+            section.showOpen = !section.showOpen
+            if (section.showOpen) {
                 //ChangeTransform causes a weird scale down on rotation
                 val objAnimator = ObjectAnimator.ofFloat(services_collapse, "rotation", 0f).setDuration(400)
                 objAnimator.setAutoCancel(true)
@@ -53,8 +54,6 @@ class SectionView : LinearLayout {
                 TransitionManager.beginDelayedTransition(item_parent_view, Fade(Fade.MODE_OUT).addTarget(services_container));
                 services_container.visibility = View.GONE
             }
-
-            showHide = !showHide
         }
 
         for (item in section.serviceItem) {

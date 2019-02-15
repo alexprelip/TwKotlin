@@ -26,7 +26,14 @@ class ItemView : LinearLayout {
         sub_service_duration.text = service.duration
         sub_service_price.text = service.price
 
-        
+        item_view_root.setOnClickListener {
+            service.selected = !service.selected
+            if (service.selected) {
+                item_selected_indicator.setImageResource(R.drawable.ic_check_circle_black_24dp)
+            } else {
+                item_selected_indicator.setImageResource(R.drawable.ic_add_circle_outline_black_24dp)
+            }
+        }
 
 
 //        this.header = findViewById(R.id.header) as TextView

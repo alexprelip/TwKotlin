@@ -59,9 +59,9 @@ public class StubGenerator {
         List<PlaceModel> list = new ArrayList<>();
 
         List<ServiceModel>serviceHighlight = new ArrayList<>(3);
-        serviceHighlight.add(new ServiceModel("Service1", "12 min", "£145", "save -30%", "£12"));
-        serviceHighlight.add(new ServiceModel("Service2", "1 min", "£45", "", ""));
-        serviceHighlight.add(new ServiceModel("Service3", "20 min", "£4.5", "", "£12"));
+        serviceHighlight.add(new ServiceModel("Service1", "12 min", "£145", "save -30%", "£12", false));
+        serviceHighlight.add(new ServiceModel("Service2", "1 min", "£45", "", "", false));
+        serviceHighlight.add(new ServiceModel("Service3", "20 min", "£4.5", "", "£12", false));
         list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place1", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));
         list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place2", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));
         list.add(new PlaceModel("https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Spacetime_lattice_analogy.svg/1920px-Spacetime_lattice_analogy.svg.png", "Place3", 3.6d, "123 reviews", "NW11", "bestOne", serviceHighlight));

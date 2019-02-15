@@ -35,11 +35,13 @@ class ServiceView : LinearLayout {
         }
 
         sub_item_parent_view.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        sub_services_container.visibility = if (service.showOpen) View.VISIBLE else View.GONE
+        arrow_plus.rotation = if (service.showOpen) 0f else -90f
 
-        var showHide = false
         sub_section_title.setOnClickListener {
+            service.showOpen = !service.showOpen
+            if (service.showOpen) {
 
-            if (showHide) {
                 //ChangeTransform() causes a weird scale down on rotation
                 val objAnimator = ObjectAnimator.ofFloat(arrow_plus, "rotation", 0f).setDuration(400)
                 objAnimator.setAutoCancel(true)
@@ -59,8 +61,6 @@ class ServiceView : LinearLayout {
                                 .setDuration(300));
                 sub_services_container.visibility = View.GONE
             }
-
-            showHide = !showHide
         }
 
 
