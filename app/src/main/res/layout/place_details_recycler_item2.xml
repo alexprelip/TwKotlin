@@ -3,7 +3,6 @@
     android:id="@+id/sub_item_parent_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -61,10 +60,8 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/sub_services_container"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/place_details_third_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical" />
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,7 +31,7 @@ class PlaceDetailsActivity : AppCompatActivity() {
         setContentView(R.layout.place_details_activity)
 
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById<View>(R.id.bottom_bar))
-        bottom_bar_layout.setOnClickListener {  }
+        bottom_bar_layout.setOnClickListener { }
         val viewPager: ViewPager = findViewById(R.id.place_details_viepager)
         viewPager.adapter = ImagePagerAdapter(listOf("https://upload.wikimedia.org/wikipedia/commons/a/a1/Khajuraho-landscape.jpg", "https://upload.wikimedia.org/wikipedia/commons/1/1e/Computer_server_rack.jpg"))
 
@@ -44,9 +46,9 @@ class PlaceDetailsActivity : AppCompatActivity() {
             place_review_count.text = getString(R.string.review_count_label, placeDetails.reviewCount)
         })
 
-        viewModel.placeServices.observe(this, Observer {sections ->
+        viewModel.placeServices.observe(this, Observer { sections ->
             this.sections = sections
-            generateList(sections)
+            place_details_main_recycler.adapter = PlaceDetailsMainAdapter(this, this.sections, { section: Int, service: Int, subService: Int -> itemClicked(section, service, subService) })
         })
 
         viewModel.getPlaceDetails(intent.getStringExtra("place_name"))
@@ -63,13 +65,42 @@ class PlaceDetailsActivity : AppCompatActivity() {
                 search_query_field.setAlpha(.0f)
             }
         })
+
+        nested_scroll_view.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        nested_scroll_view.layoutTransition.setStartDelay(LayoutTransition.CHANGING, 600)
+
+        place_details_main_recycler.isNestedScrollingEnabled = false
+        place_details_main_recycler.itemAnimator = null
+        place_details_main_recycler.layoutManager = object : LinearLayoutManager(this) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        place_details_main_recycler.adapter = PlaceDetailsMainAdapter(this, ArrayList(), { section: Int, service: Int, subService: Int -> itemClicked(section, service, subService) })
     }
 
-    private fun generateList(list: List<Section>) {
-        main_container.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-        for (section in list) {
-            main_container.addView(SectionView(this, section, { serviceId: Int -> handleItemClick(serviceId) }))
+    private fun itemClicked(section: Int, service: Int, subService: Int) {
+        if (subService > -1) {
+            val subServiceItem = sections.get(section).serviceItem.get(service).serviceSubItem[subService]
+            val serviceItem = sections.get(section).serviceItem.get(service)
+
+            val itemInitialState = subServiceItem.selected
+            if (serviceItem.isSingleOption) {
+                for (srv in serviceItem.serviceSubItem) {
+                    srv.selected = false
+                }
+            }
+            subServiceItem.selected = !itemInitialState
+        } else if (service > -1) {
+            TransitionManager.beginDelayedTransition(nested_scroll_view)
+            sections.get(section).serviceItem.get(service).showOpen = !sections.get(section).serviceItem.get(service).showOpen
+        } else {
+            TransitionManager.beginDelayedTransition(nested_scroll_view)
+            sections.get(section).showOpen = !sections.get(section).showOpen
         }
+
+        place_details_main_recycler.adapter?.notifyItemChanged(section, ItemChangedPayload(section, service, subService))
+        handleItemClick(-1)
     }
 
     private fun handleItemClick(serviceId: Int) {
@@ -77,16 +108,20 @@ class PlaceDetailsActivity : AppCompatActivity() {
         for (section in sections) {
             for (service in section.serviceItem) {
                 for (subService in service.serviceSubItem) {
-                    if (subService.selected) {count++}
+                    if (subService.selected) {
+                        count++
+                    }
                 }
             }
         }
 
-        if (count>0) {
+        if (count > 0) {
             mBottomSheetBehavior?.setState(BottomSheetBehavior.STATE_EXPANDED)
         } else {
             mBottomSheetBehavior?.setState(BottomSheetBehavior.STATE_COLLAPSED)
         }
         selected_item_count.text = count.toString()
     }
+
+    data class ItemChangedPayload(val section: Int, val service: Int, val subService: Int)
 }

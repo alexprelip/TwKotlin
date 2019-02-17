@@ -1,16 +1,10 @@
 package alexpr.co.uk.twkotlin.network.stubs;
 
+import alexpr.co.uk.twkotlin.models.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import alexpr.co.uk.twkotlin.models.MainMenu;
-import alexpr.co.uk.twkotlin.models.MenuItem;
-import alexpr.co.uk.twkotlin.models.MenuSection;
-import alexpr.co.uk.twkotlin.models.PlaceModel;
-import alexpr.co.uk.twkotlin.models.Section;
-import alexpr.co.uk.twkotlin.models.ServiceItem;
-import alexpr.co.uk.twkotlin.models.ServiceModel;
 
 public class StubGenerator {
 
@@ -90,13 +84,25 @@ public class StubGenerator {
     public static List<Section> getMockPlaceServices() {
         ArrayList<Section> sections = new ArrayList<>();
         Section section = new Section("January Beauty Sale", new ArrayList<ServiceItem>(), false);
-        ServiceItem serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1January", "20 min", "£30", "-25%", "25", false, 111111), "details?", "Nails", false);
+        ServiceItem serviceItem = new ServiceItem(
+                new ArrayList<ServiceModel>(),
+                new ServiceModel("Service1January", "20 min", "£30", "-25%", "25", false, 111111),
+                "details?",
+                "Nails",
+                false,
+                false);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1January", "21 min", "£31", "-5%", "15", false, 111112));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2January", "22 min", "£32", "-15%", "25", false, 111113));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3January", "23 min", "£33", "-35%", "35", false, 111114));
         section.getServiceItem().add(serviceItem);
 
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2January", "20 min", "£30", "-25%", "25", false, 111115), "details?", "Nails", false);
+        serviceItem = new ServiceItem(
+                new ArrayList<ServiceModel>(),
+                new ServiceModel("Service2January", "20 min", "£30", "-25%", "25", false, 111115),
+                "details?",
+                "Nails",
+                false,
+                true);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1January", "21 min", "£31", "-5%", "15", false, 111116));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2January", "22 min", "£32", "-15%", "25", false, 111117));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3January", "23 min", "£33", "-35%", "35", false, 111118));
@@ -104,13 +110,13 @@ public class StubGenerator {
         sections.add(section);
 
         section = new Section("February Beauty Sale", new ArrayList<ServiceItem>(), false);
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1February", "20 min", "£30", "-25%", "25", false, 111119), "details?", "Nails", false);
+        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1February", "20 min", "£30", "-25%", "25", false, 111119), "details?", "Nails", false, false);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1February", "21 min", "£31", "-5%", "15", false, 111120));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2February", "22 min", "£32", "-15%", "25", false, 111121));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3February", "23 min", "£33", "-35%", "35", false, 111122));
         section.getServiceItem().add(serviceItem);
 
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2February", "20 min", "£30", "-25%", "25", false, 111123), "details?", "Nails", false);
+        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2February", "20 min", "£30", "-25%", "25", false, 111123), "details?", "Nails", false, false);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1January", "21 min", "£31", "-5%", "15", false, 111124));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2January", "22 min", "£32", "-15%", "25", false, 111125));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3January", "23 min", "£33", "-35%", "35", false, 111126));
@@ -118,13 +124,13 @@ public class StubGenerator {
         sections.add(section);
 
         section = new Section("March Beauty Sale", new ArrayList<ServiceItem>(), false);
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1March", "20 min", "£30", "-25%", "25", false, 111127), "details?", "Nails", false);
+        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1March", "20 min", "£30", "-25%", "25", false, 111127), "details?", "Nails", false, true);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1March", "21 min", "£31", "-5%", "15", false, 111128));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2March", "22 min", "£32", "-15%", "25", false, 111129));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3March", "23 min", "£33", "-35%", "35", false, 111130));
         section.getServiceItem().add(serviceItem);
 
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2March", "20 min", "£30", "-25%", "25", false, 111131), "details?", "Nails", false);
+        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2March", "20 min", "£30", "-25%", "25", false, 111131), "details?", "Nails", false, true);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1March", "21 min", "£31", "-5%", "15", false, 111132));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2March", "22 min", "£32", "-15%", "25", false, 111133));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3March", "23 min", "£33", "-35%", "35", false, 111134));
@@ -132,13 +138,13 @@ public class StubGenerator {
         sections.add(section);
 
         section = new Section("April Beauty Sale", new ArrayList<ServiceItem>(), false);
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1April", "20 min", "£30", "-25%", "25", false, 111135), "details?", "Nails", false);
+        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service1April", "20 min", "£30", "-25%", "25", false, 111135), "details?", "Nails", false, true);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1April", "21 min", "£31", "-5%", "15", false, 111136));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2April", "22 min", "£32", "-15%", "25", false, 111137));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3April", "23 min", "£33", "-35%", "35", false, 111138));
         section.getServiceItem().add(serviceItem);
 
-        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2April", "20 min", "£30", "-25%", "25", false, 111139), "details?", "Nails", false);
+        serviceItem = new ServiceItem(new ArrayList<ServiceModel>(), new ServiceModel("Service2April", "20 min", "£30", "-25%", "25", false, 111139), "details?", "Nails", false, false);
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService1April", "21 min", "£31", "-5%", "15, false", false, 111140));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService2April", "22 min", "£32", "-15%", "25", false, 111141));
         serviceItem.getServiceSubItem().add(new ServiceModel("SubService3April", "23 min", "£33", "-35%", "35", false, 111142));

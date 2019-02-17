@@ -84,14 +84,15 @@
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -129,7 +130,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/place_address"
-                    android:layout_alignParentBottom="true"
                     android:layout_marginTop="20dp"
                     android:text="3.8"
                     android:textSize="40sp" />
@@ -139,7 +139,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/place_rating_number"
                     android:layout_alignBottom="@+id/place_rating_number"
-                    android:layout_alignParentBottom="true"
                     android:layout_toStartOf="@+id/place_add_favourite"
                     android:layout_toEndOf="@id/place_rating_number"
                     android:gravity="center_vertical"
@@ -162,8 +161,8 @@
                     android:id="@+id/place_add_favourite"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:layout_below="@+id/place_details"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
                     android:src="@drawable/ic_favorite_border_black_24dp" />
             </RelativeLayout>
 
@@ -173,6 +172,14 @@
                 android:layout_marginTop="1dp"
                 android:background="#FFFFFF"
                 android:text="POPULAR SERVICES FOR ..." />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/place_details_main_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="60dp" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
