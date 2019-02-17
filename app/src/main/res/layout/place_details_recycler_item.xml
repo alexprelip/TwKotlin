@@ -24,6 +24,19 @@
             android:textColor="#000066"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/selected_service_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/services_collapse"
+            android:gravity="center"
+            android:text="X added"
+            android:drawableStart="@drawable/ic_check_orange_24dp"
+            android:drawablePadding="5dp"
+            android:visibility="gone"
+            android:textColor="#E87B0E" />
+
         <ImageView
             android:id="@+id/services_collapse"
             android:layout_width="wrap_content"

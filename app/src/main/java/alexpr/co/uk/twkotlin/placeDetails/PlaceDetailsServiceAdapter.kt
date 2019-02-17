@@ -49,7 +49,7 @@ class PlaceDetailsServiceAdapter(
                 if (serviceItem.isSingleOption) {
                     view.place_details_third_recycler.adapter?.notifyItemRangeChanged(0, serviceItem.serviceSubItem.size, Any())
                 } else {
-                    view.place_details_third_recycler.adapter?.notifyItemChanged(payload.subService)
+                    view.place_details_third_recycler.adapter?.notifyItemChanged(payload.subService, Any())
                 }
 
                 if (serviceItem.showOpen) {
@@ -62,6 +62,13 @@ class PlaceDetailsServiceAdapter(
                     val objAnimator = ObjectAnimator.ofFloat(view.arrow_plus, "rotation", -90f).setDuration(400)
                     objAnimator.setAutoCancel(true)
                     objAnimator.start()
+                }
+
+                view.sub_section_title.isClickable = isCollapsible(serviceItem)
+                if (isCollapsible(serviceItem)) {
+                    view.arrow_plus.visibility = View.VISIBLE
+                } else {
+                    view.arrow_plus.visibility = View.INVISIBLE
                 }
             }
         }
@@ -84,8 +91,23 @@ class PlaceDetailsServiceAdapter(
                 }
             }
             view.place_details_third_recycler.adapter = PlaceDetailsServiceItemAdapter(context, service.serviceSubItem, section, adapterPosition, clickListener)
-
             view.sub_section_title.setOnClickListener { clickListener(section, adapterPosition, -1) }
+
+            view.sub_section_title.isClickable = isCollapsible(service)
+            if (isCollapsible(service)) {
+                view.arrow_plus.visibility = View.VISIBLE
+            } else {
+                view.arrow_plus.visibility = View.INVISIBLE
+            }
         }
+    }
+
+    private fun isCollapsible(serviceItem: ServiceItem): Boolean {
+        for (subService in serviceItem.serviceSubItem) {
+            if (subService.selected) {
+                return false
+            }
+        }
+        return true
     }
 }

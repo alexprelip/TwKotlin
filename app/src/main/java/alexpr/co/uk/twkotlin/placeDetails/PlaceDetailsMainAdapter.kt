@@ -53,6 +53,13 @@ class PlaceDetailsMainAdapter(val context: Context, val sectionList: List<Sectio
                     view.place_details_second_recycler.visibility = View.GONE
                 }
 
+                if (countSelected(section) > 0) {
+                    view.selected_service_count.visibility = View.VISIBLE
+                    view.selected_service_count.text = "${countSelected(section)} added"
+                } else {
+                    view.selected_service_count.visibility = View.GONE
+                }
+
             }
         }
 
@@ -79,5 +86,17 @@ class PlaceDetailsMainAdapter(val context: Context, val sectionList: List<Sectio
 
             view.asdf.setOnClickListener { clickListener(adapterPosition, -1, -1) }
         }
+    }
+
+    private fun countSelected(section: Section): Int {
+        var selected = 0
+        for (service in section.serviceItem) {
+            for (subService in service.serviceSubItem) {
+                if (subService.selected) {
+                    selected++
+                }
+            }
+        }
+        return selected
     }
 }
